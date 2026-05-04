@@ -4,7 +4,16 @@ version = "0.1.0"
 edition = "2024"
 rust-version = "1.89.0"
 license = "MPL-2.0"
+description = "GPU-friendly per-fragment erosion filter for Bevy, ported from Rune Skovbo Johansen's Shadertoy."
+repository = "https://github.com/korbindeman/bevy_erosion_filter"
+documentation = "https://docs.rs/bevy_erosion_filter"
+readme = "README.md"
+keywords = ["bevy", "terrain", "erosion", "noise", "procedural"]
+categories = ["game-development", "graphics", "rendering"]
 
 [dependencies]
 bevy = { version = "0.18", default-features = false, features = ["bevy_render", "bevy_asset"] }
 glam = "0.30"
+
+[dev-dependencies]
+bevy = { version = "0.18", features = ["wayland"] }

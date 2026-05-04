@@ -11,15 +11,16 @@
 //!
 //! ```wgsl
 //! #import bevy_erosion_filter::erosion::{
-//!     erosion, apply_erosion, gullies, fbm,
-//!     ErosionParams, erosion_params_default,
+//!     fbm, erosion_filter, erosion_filter_params_default,
 //! }
 //!
 //! // Get base height + analytical gradient from your own height function:
 //! let base = fbm(uv, 3.0, 4, 2.0, 0.5);
-//! let eroded = apply_erosion(uv, base, erosion_params_default());
-//! let height = eroded.x;
-//! let grad = eroded.yz;
+//! let fade_target = clamp(base.x / 0.1, -1.0, 1.0);
+//! let filtered = erosion_filter(uv, base, fade_target, erosion_filter_params_default());
+//! let height = base.x + filtered.delta.x;
+//! let grad = base.yz + filtered.delta.yz;
+//! let ridge_map = filtered.ridge_map;
 //! ```
 //!
 //! # CPU usage
@@ -30,9 +31,9 @@
 //!
 //! let p = Vec2::new(1.0, 2.0);
 //! let base = cpu::fbm(p, 3.0, 4, 2.0, 0.5);
-//! let params = cpu::ErosionParams::default();
-//! let eroded = cpu::apply_erosion(p, base, &params);
-//! println!("eroded height = {}", eroded.x);
+//! let params = cpu::ErosionFilterParams::default();
+//! let filtered = cpu::erosion_filter(p, base, base.x.clamp(-1.0, 1.0), &params);
+//! println!("eroded height = {}", base.x + filtered.delta.x);
 //! ```
 
 use bevy::prelude::*;
@@ -51,42 +52,49 @@ impl Plugin for ErosionFilterPlugin {
     }
 }
 
-/// GPU uniform layout matching the WGSL `ErosionParams` struct, plus a
-/// matching CPU-side struct for parity tests.
+/// GPU uniform layout matching the WGSL `ErosionFilterParams` struct.
 ///
-/// Layout matches the WGSL declaration field-for-field. WGSL uniform alignment
-/// rules: 8 floats + 1 i32 = 36 bytes, padded to 48 by the std140 packing.
-/// `ShaderType` derives the right padding when used as a Bevy uniform.
+/// Use this when driving the raw advanced filter from Bevy uniforms. The
+/// fields map directly to [`cpu::ErosionFilterParams`] and the WGSL
+/// `ErosionFilterParams` declaration.
 #[derive(Clone, Copy, Debug, PartialEq, bevy::render::render_resource::ShaderType)]
 #[repr(C)]
-pub struct ErosionParamsGpu {
+pub struct ErosionFilterParamsGpu {
     pub scale: f32,
     pub strength: f32,
-    pub slope_power: f32,
+    pub gully_weight: f32,
+    pub detail: f32,
+    pub rounding: Vec4,
+    pub onset: Vec4,
+    pub assumed_slope: Vec2,
     pub cell_scale: f32,
+    pub normalization: f32,
     pub octaves: i32,
-    pub gain: f32,
     pub lacunarity: f32,
-    pub height_offset: f32,
+    pub gain: f32,
 }
 
-impl Default for ErosionParamsGpu {
+impl Default for ErosionFilterParamsGpu {
     fn default() -> Self {
-        Self::from_cpu(&cpu::ErosionParams::default())
+        Self::from_cpu(&cpu::ErosionFilterParams::default())
     }
 }
 
-impl ErosionParamsGpu {
-    pub fn from_cpu(p: &cpu::ErosionParams) -> Self {
+impl ErosionFilterParamsGpu {
+    pub fn from_cpu(p: &cpu::ErosionFilterParams) -> Self {
         Self {
             scale: p.scale,
             strength: p.strength,
-            slope_power: p.slope_power,
+            gully_weight: p.gully_weight,
+            detail: p.detail,
+            rounding: p.rounding,
+            onset: p.onset,
+            assumed_slope: p.assumed_slope,
             cell_scale: p.cell_scale,
+            normalization: p.normalization,
             octaves: p.octaves,
-            gain: p.gain,
             lacunarity: p.lacunarity,
-            height_offset: p.height_offset,
+            gain: p.gain,
         }
     }
 }
