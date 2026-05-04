@@ -1,0 +1,10 @@
+[package]
+name = "bevy_erosion_filter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89.0"
+license = "MPL-2.0"
+
+[dependencies]
+bevy = { version = "0.18", default-features = false, features = ["bevy_render", "bevy_asset"] }
+glam = "0.30"
