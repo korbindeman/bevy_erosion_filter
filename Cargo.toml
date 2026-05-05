@@ -1,6 +1,6 @@
 [package]
 name = "bevy_erosion_filter"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Korbin de Man <korbindeman4@gmail.com>"]
 edition = "2024"
 rust-version = "1.89.0"

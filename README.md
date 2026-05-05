@@ -26,12 +26,25 @@ Tracks released Bevy versions. MSRV: Rust 1.89.
 |---|---|
 | `0.1` | `0.18` |
 
+## Cargo features
+
+| Feature | Default | Description |
+|---|---|---|
+| `bevy` | yes | Enables `ErosionFilterPlugin` and `ErosionFilterParamsGpu`. Disable with `default-features = false` to use only the pure-Rust [`cpu`](https://docs.rs/bevy_erosion_filter/latest/bevy_erosion_filter/cpu/index.html) module from non-Bevy crates (offline baking, build tools, other engines). |
+
 ## Install
 
 ```toml
 [dependencies]
 bevy = "0.18"
 bevy_erosion_filter = "0.1"
+```
+
+Without Bevy (CPU-only):
+
+```toml
+[dependencies]
+bevy_erosion_filter = { version = "0.1", default-features = false }
 ```
 
 Add the plugin to your `App`:
