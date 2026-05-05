@@ -17,8 +17,15 @@ exclude = [
     "rust-toolchain.toml",
 ]
 
+[features]
+default = ["bevy"]
+# Pull in the Bevy plugin (`ErosionFilterPlugin`) and the GPU uniform layout
+# (`ErosionFilterParamsGpu`). Disable to use only the pure-Rust `cpu` module
+# from non-Bevy crates (offline baking, build tools, engines other than Bevy).
+bevy = ["dep:bevy"]
+
 [dependencies]
-bevy = { version = "0.18", default-features = false, features = ["bevy_render", "bevy_asset"] }
+bevy = { version = "0.18", default-features = false, features = ["bevy_render", "bevy_asset"], optional = true }
 glam = "0.30"
 
 [dev-dependencies]
