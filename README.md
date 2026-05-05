@@ -1,10 +1,14 @@
 # bevy_erosion_filter
 
+[![CI](https://github.com/korbindeman/bevy_erosion_filter/actions/workflows/ci.yml/badge.svg)](https://github.com/korbindeman/bevy_erosion_filter/actions/workflows/ci.yml)
+[![Crates.io](https://img.shields.io/crates/v/bevy_erosion_filter.svg)](https://crates.io/crates/bevy_erosion_filter)
+[![Docs](https://docs.rs/bevy_erosion_filter/badge.svg)](https://docs.rs/bevy_erosion_filter)
+
 A GPU-friendly per-fragment erosion filter for Bevy. Adds branched gully detail to any heightfield analytically: no neighbour reads, no simulation, parallel across fragments, evaluable in chunks. Works as a sub-pixel detail layer on baked terrain or the high-frequency pass of a per-fragment procedural surface.
 
 Ported from Rune Skovbo Johansen's *Advanced Terrain Erosion Filter*
-([Shadertoy](https://www.shadertoy.com/view/wXcfWn) ·
-[blog](https://blog.runevision.com/2026/03/fast-and-gorgeous-erosion-filter.html)),
+([blog](https://blog.runevision.com/2026/03/fast-and-gorgeous-erosion-filter.html) ·
+[Shadertoy](https://www.shadertoy.com/view/wXcfWn)),
 which builds on prior work by Fewes, Clay John, and Inigo Quilez. See
 [`THIRD-PARTY-NOTICES.md`](./THIRD-PARTY-NOTICES.md).
 
