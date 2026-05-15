@@ -36,14 +36,29 @@
 //! println!("eroded height = {}", base.x + filtered.delta.x);
 //! ```
 //!
+//! # Raw WGSL source
+//!
+//! [`EROSION_WGSL`] exposes the shader source as a `&'static str`, available
+//! regardless of the `bevy` feature. Use this when you need to feed the WGSL
+//! to `wgpu` (or another backend) directly, outside Bevy's asset/shader
+//! loader — for example, offline bake CLIs that run compute pipelines without
+//! a Bevy `App`.
+//!
 //! # Cargo features
 //!
 //! `bevy` (default) — pulls in Bevy and registers the WGSL shader library
 //! plus the [`ErosionFilterParamsGpu`] uniform layout. Disable with
-//! `default-features = false` to use only the pure-Rust [`cpu`] module from
-//! non-Bevy crates.
+//! `default-features = false` to use only the pure-Rust [`cpu`] module and
+//! [`EROSION_WGSL`] from non-Bevy crates.
 
 pub mod cpu;
+
+/// Raw WGSL source for the erosion shader library.
+///
+/// Identical to the file Bevy loads via `ErosionFilterPlugin` when the `bevy`
+/// feature is enabled. Use this when you need to feed the shader to `wgpu`
+/// directly, outside Bevy's asset pipeline.
+pub const EROSION_WGSL: &str = include_str!("../assets/shaders/erosion.wgsl");
 
 #[cfg(feature = "bevy")]
 mod bevy_integration {

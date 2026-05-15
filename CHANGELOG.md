@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2
+
+- Exposes the erosion WGSL source as a public `EROSION_WGSL` constant so
+  non-Bevy consumers (offline bake CLIs running `wgpu` directly, other engines)
+  can use the shader without locating it in Cargo's registry cache.
+  Available regardless of the `bevy` feature.
+
 ## 0.1.0 - Initial Release
 
 - Adds `ErosionFilterPlugin`, registering `assets/shaders/erosion.wgsl` as

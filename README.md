@@ -136,6 +136,23 @@ let params = ErosionFilterParamsGpu::from_cpu(&ErosionFilterParams::default());
 
 `ErosionFilterParamsGpu::default()` produces the same values as `erosion_filter_params_default()` in WGSL.
 
+## Use the WGSL outside Bevy
+
+If you're driving `wgpu` (or another backend) directly — for example an
+offline bake CLI that runs compute pipelines without a Bevy `App` — the
+shader source is exposed as a `&'static str` constant. It's available with
+or without the `bevy` feature:
+
+```rust
+let module = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+    label: Some("erosion"),
+    source: wgpu::ShaderSource::Wgsl(bevy_erosion_filter::EROSION_WGSL.into()),
+});
+```
+
+The constant is the same WGSL `ErosionFilterPlugin` registers as a shader
+library at runtime.
+
 ## Use it from Rust (CPU)
 
 `bevy_erosion_filter::cpu` mirrors the same algorithm in pure Rust, useful for offline baking and parity tests:
