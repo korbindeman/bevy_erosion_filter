@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+- Updates to Bevy 0.19 (and glam 0.32). Requires consumers to be on Bevy 0.19.
+
 ## 0.1.2
 
 - Exposes the erosion WGSL source as a public `EROSION_WGSL` constant so

@@ -452,7 +452,7 @@ fn update_terrain_material(
         return;
     }
 
-    if let Some(material) = materials.get_mut(&terrain.0) {
+    if let Some(mut material) = materials.get_mut(&terrain.0) {
         material.settings = settings.material_uniform();
     }
     water.translation.y = settings.water_level;

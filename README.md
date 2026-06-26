@@ -24,6 +24,7 @@ Tracks released Bevy versions. MSRV: Rust 1.89.
 
 | `bevy_erosion_filter` | `bevy` |
 |---|---|
+| `0.2` | `0.19` |
 | `0.1` | `0.18` |
 
 ## Cargo features
@@ -36,15 +37,15 @@ Tracks released Bevy versions. MSRV: Rust 1.89.
 
 ```toml
 [dependencies]
-bevy = "0.18"
-bevy_erosion_filter = "0.1"
+bevy = "0.19"
+bevy_erosion_filter = "0.2"
 ```
 
 Without Bevy (CPU-only):
 
 ```toml
 [dependencies]
-bevy_erosion_filter = { version = "0.1", default-features = false }
+bevy_erosion_filter = { version = "0.2", default-features = false }
 ```
 
 Add the plugin to your `App`:
