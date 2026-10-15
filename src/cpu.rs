@@ -1,5 +1,5 @@
 //! Pure-Rust port of the erosion filter, mirroring the WGSL implementation in
-//! `assets/shaders/erosion.wgsl` numerically. Useful for offline baking,
+//! `src/erosion.wesl` numerically. Useful for offline baking,
 //! parity tests, and applications that need to evaluate the same field on
 //! both CPU and GPU.
 //!
@@ -169,7 +169,7 @@ pub fn phacelle_noise(
 }
 
 /// Raw advanced erosion parameters matching `ErosionFilterParams` in
-/// `assets/shaders/erosion.wgsl`.
+/// `src/erosion.wesl`.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct ErosionFilterParams {
     pub scale: f32,

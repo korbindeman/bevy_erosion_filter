@@ -23,7 +23,7 @@ use bevy::{
 use bevy_egui::{EguiContexts, EguiPlugin, EguiPrimaryContextPass, egui, input::EguiWantsInput};
 use bevy_erosion_filter::{ErosionFilterPlugin, cpu};
 
-const TERRAIN_SHADER: &str = "shaders/terrain_demo.wgsl";
+const TERRAIN_SHADER: &str = "shaders/terrain_demo.wesl";
 const TERRAIN_EXTENT: f32 = 22.0;
 const TERRAIN_RESOLUTION: usize = 640;
 const SIDE_LAYERS: usize = 28;
