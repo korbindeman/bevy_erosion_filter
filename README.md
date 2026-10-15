@@ -20,10 +20,11 @@ The filter overlays multi-octave gully patterns aligned to the steepest-descent 
 
 ## Bevy compatibility
 
-Tracks released Bevy versions. MSRV: Rust 1.89.
+Tracks released Bevy versions. MSRV: Rust 1.97.
 
 | `bevy_erosion_filter` | `bevy` |
 |---|---|
+| `0.3` | `0.20` |
 | `0.2` | `0.19` |
 | `0.1` | `0.18` |
 
@@ -37,15 +38,15 @@ Tracks released Bevy versions. MSRV: Rust 1.89.
 
 ```toml
 [dependencies]
-bevy = "0.19"
-bevy_erosion_filter = "0.2"
+bevy = "0.20"
+bevy_erosion_filter = "0.3"
 ```
 
 Without Bevy (CPU-only):
 
 ```toml
 [dependencies]
-bevy_erosion_filter = { version = "0.2", default-features = false }
+bevy_erosion_filter = { version = "0.3", default-features = false }
 ```
 
 Add the plugin to your `App`:
@@ -60,7 +61,7 @@ App::new()
     .run();
 ```
 
-`ErosionFilterPlugin` registers the WGSL file as a shader library at startup. Without it the `#import bevy_erosion_filter::erosion::...` path won't resolve and Bevy will emit a shader import error.
+`ErosionFilterPlugin` registers `src/erosion.wesl` as a shader library at startup. Bevy 0.20 dropped `#define_import_path`; the public import path is still `bevy_erosion_filter::erosion`, derived from the embedded module path `embedded://bevy_erosion_filter/erosion.wesl`. Without the plugin that path will not resolve and Bevy will emit a shader import error. Consumer shaders that used naga_oil (`#import`, `#{MATERIAL_BIND_GROUP}`, `#ifdef`) need to be written in WESL (`import …;`, `constants::MATERIAL_BIND_GROUP`, `@if`).
 
 ## Run the example
 
@@ -72,14 +73,14 @@ The demo renders a procedural terrain with live egui sliders for all filter para
 
 ## Platform support
 
-Tested on native desktop. The shader is plain WGSL and works anywhere Bevy compiles your material, including WASM/WebGPU; WASM and WebGL2 are untested. `terrain_demo` targets native desktop.
+Tested on native desktop. The library shader is WESL-compatible WGSL (no preprocessor) and works anywhere Bevy compiles your material, including WASM/WebGPU; WASM and WebGL2 are untested. `terrain_demo` targets native desktop.
 
 ## Use it from your own shader
 
 ```wgsl
-#import bevy_erosion_filter::erosion::{
+import bevy_erosion_filter::erosion::{
     fbm, erosion_filter, erosion_filter_params_default,
-}
+};
 
 @fragment
 fn fragment(in: VertexOutput) -> @location(0) vec4<f32> {
@@ -117,7 +118,7 @@ Exported WGSL symbols:
 Call `phacelle_noise` directly when you want only the stripe pattern without the full multi-octave erosion stack, for example a single-frequency gully mask:
 
 ```wgsl
-#import bevy_erosion_filter::erosion::phacelle_noise
+import bevy_erosion_filter::erosion::phacelle_noise;
 
 let slope_dir = normalize(vec2<f32>(-dpdx(height), -dpdy(height)));
 let cell = phacelle_noise(in.uv, slope_dir, 0.7, 0.0, 0.5);

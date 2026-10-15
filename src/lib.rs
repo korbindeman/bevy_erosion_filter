@@ -10,9 +10,9 @@
 //! Add [`ErosionFilterPlugin`] to your app, then in your shader:
 //!
 //! ```wgsl
-//! #import bevy_erosion_filter::erosion::{
+//! import bevy_erosion_filter::erosion::{
 //!     fbm, erosion_filter, erosion_filter_params_default,
-//! }
+//! };
 //!
 //! // Get base height + analytical gradient from your own height function:
 //! let base = fbm(uv, 3.0, 4, 2.0, 0.5);
@@ -46,7 +46,7 @@
 //!
 //! # Cargo features
 //!
-//! `bevy` (default) — pulls in Bevy and registers the WGSL shader library
+//! `bevy` (default) — pulls in Bevy and registers the WESL shader library
 //! plus the [`ErosionFilterParamsGpu`] uniform layout. Disable with
 //! `default-features = false` to use only the pure-Rust [`cpu`] module and
 //! [`EROSION_WGSL`] from non-Bevy crates.
@@ -58,22 +58,26 @@ pub mod cpu;
 /// Identical to the file Bevy loads via `ErosionFilterPlugin` when the `bevy`
 /// feature is enabled. Use this when you need to feed the shader to `wgpu`
 /// directly, outside Bevy's asset pipeline.
-pub const EROSION_WGSL: &str = include_str!("../assets/shaders/erosion.wgsl");
+pub const EROSION_WGSL: &str = include_str!("erosion.wesl");
 
 #[cfg(feature = "bevy")]
 mod bevy_integration {
     use crate::cpu;
     use bevy::prelude::*;
 
-    /// Bevy plugin that registers the erosion WGSL as a shader library.
+    /// Bevy plugin that registers the erosion WESL module as a shader library.
     ///
     /// After adding this plugin you can import the library from your own shader as
     /// `bevy_erosion_filter::erosion`.
+    ///
+    /// Bevy 0.20 derives that path from the embedded module location
+    /// (`src/erosion.wesl` → `embedded://bevy_erosion_filter/erosion.wesl`).
+    /// `#define_import_path` is gone and is not used here.
     pub struct ErosionFilterPlugin;
 
     impl Plugin for ErosionFilterPlugin {
         fn build(&self, app: &mut App) {
-            bevy::shader::load_shader_library!(app, "../assets/shaders/erosion.wgsl");
+            bevy::shader::load_shader_library!(app, "erosion.wesl");
         }
     }
 

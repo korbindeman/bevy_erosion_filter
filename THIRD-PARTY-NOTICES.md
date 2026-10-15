@@ -27,7 +27,7 @@ plane demo, and tests are this crate's contribution.
 - **Inigo Quilez** — *Noise - Gradient - 2D - Deriv*.
   Shadertoy: <https://www.shadertoy.com/view/XdXBRH>. Source of the
   analytical-derivative gradient noise (`noised`) and the 2D hash bundled
-  in `assets/shaders/erosion.wgsl` and `src/cpu.rs`, under MIT-compatible
+  in `src/erosion.wesl` and `src/cpu.rs`, under MIT-compatible
   terms.
 
 This crate is distributed under MPL-2.0. MIT notices for bundled noise

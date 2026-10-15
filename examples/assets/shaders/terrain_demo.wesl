@@ -1,16 +1,15 @@
-#import bevy_pbr::{
+import bevy_pbr::render::{
     forward_io::Vertex,
     mesh_functions,
     mesh_view_bindings::view,
     view_transformations::position_world_to_clip,
-}
-
-#import bevy_erosion_filter::erosion::{
+};
+import bevy_erosion_filter::erosion::{
     ErosionFilterParams,
     fbm,
     erosion_filter,
     noised,
-}
+};
 
 const PI: f32 = 3.14159265358979;
 
@@ -44,7 +43,7 @@ struct TerrainDemoUniform {
     terrain1: vec4<f32>,
 }
 
-@group(#{MATERIAL_BIND_GROUP}) @binding(0) var<uniform> demo: TerrainDemoUniform;
+@group(constants::MATERIAL_BIND_GROUP) @binding(0) var<uniform> demo: TerrainDemoUniform;
 
 struct TerrainEval {
     unit_height: f32,

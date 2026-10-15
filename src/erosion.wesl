@@ -20,8 +20,10 @@
 // WGSL port additions copyright (c) 2026 the bevy_erosion_filter authors.
 // See LICENSE-MPL-2.0, LICENSE-MIT, and THIRD-PARTY-NOTICES.md.
 // =====================================================================================
-
-#define_import_path bevy_erosion_filter::erosion
+//
+// Bevy 0.20 import path: `bevy_erosion_filter::erosion`.
+// That path comes from this file's embedded location (`src/erosion.wesl`),
+// not from `#define_import_path` (removed in Bevy 0.20).
 
 // Inigo Quilez 2D hash. Returns a vec2 in [-1, 1].
 fn hash2(x_in: vec2<f32>) -> vec2<f32> {
